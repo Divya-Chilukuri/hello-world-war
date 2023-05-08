@@ -1,12 +1,10 @@
 pipeline{
-    agent {
-  label 'docker'
-} 
+    agent none
 environment {
 		DOCKER_LOGIN_CREDENTIALS=credentials('dockerhostpush')
 	}
     stages {
-  stage('checkout') 
+  stage('checkout code from git') 
   agent {
   label 'docker'
   } 
