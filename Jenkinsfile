@@ -6,30 +6,46 @@ environment {
 		DOCKER_LOGIN_CREDENTIALS=credentials('dockerhostpush')
 	}
     stages {
-  stage('checkout') {
+  stage('checkout') 
+  agent {
+  label 'docker'
+  } 
     steps {
-      git 'https://github.com/DivyaChilukuri/hello-world-war.git'
+      checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Divya-Chilukuri/hello-world-war.git']])
     }
   }
 
   stage('build') {
+  agent {
+  label 'docker'
+  } 
     steps {
       sh 'mvn clean install'
-      sh 'docker build -t divyachilukuri/divya:$BUILD_NUMBER .' 
-
     }
   }
 
-  stage('push') {
+  stage('build and push to dockerhub') {
+  agent {
+  label 'docker'
+  }
+   environment { 
+	dockerTag = "version$BUILD_NUMBER"
+   }
     steps {
+      sh 'docker build -t divyachilukuri/jaksh:$dockerTag .'	    
       sh 'echo $DOCKER_LOGIN_CREDENTIALS_PSW | docker login -u $DOCKER_LOGIN_CREDENTIALS_USR --password-stdin'
-      sh 'docker push divyachilukuri/divya:$BUILD_NUMBER'
+      sh 'docker push divyachilukuri/jaksh:$dockerTag'
     }
   }
 
-  stage('deploy') {
+  stage('deploy in kubernetes') {
+  agent {
+  label 'k8s'
+  } 
     steps {
-      sh "docker run -itd -p 80:8080 divyachilukuri/divya:$BUILD_NUMBER"
+      checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Divya-Chilukuri/hello-world-war.git']])
+      sh 'kubectl apply -f deployment.yml'
+      sh 'kubectl apply -f service.yml'
     }
   }
 
