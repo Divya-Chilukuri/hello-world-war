@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: java-application
+  name: web-application
   labels:
-    app: java-application
+    app: web-application
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: java-application
+      app: web-application
   template:
     metadata:
       labels:
-        app: java-application
+        app: web-application
     spec:
       containers:
-      - name: java-application
-        image: krishnalakamsani/java-application:5
+      - name: web-application
+        image: divyachilukuri/jaksh
         ports:
         - containerPort: 8080
