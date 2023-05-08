@@ -4,7 +4,7 @@ environment {
 		DOCKER_LOGIN_CREDENTIALS=credentials('dockerhostpush')
 	}
     stages {
-  stage('checkout code from git') 
+	    stage('checkout code from git'){ 
   agent {
   label 'docker'
   } 
@@ -48,4 +48,4 @@ environment {
   }
 
 }
-
+}
