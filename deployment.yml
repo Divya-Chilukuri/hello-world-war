@@ -5,7 +5,7 @@ metadata:
   labels:
     app: web-application
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: web-application
@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: web-application
-        image: divyachilukuri/jaksh
+        image: divyachilukuri/jaksh:9
         ports:
         - containerPort: 8080
