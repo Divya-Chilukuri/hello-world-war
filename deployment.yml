@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: web-application
-        image: divyachilukuri/jaksh:version22
+        image: divyachilukuri/jaksh:version23
         ports:
         - containerPort: 8080
